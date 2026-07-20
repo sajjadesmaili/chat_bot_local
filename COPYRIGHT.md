@@ -27,6 +27,8 @@ If this project has been helpful to you and you'd like to support its continued 
 
 https://sajjadesmaili.ir/support/
 
+https://www.coffeete.ir/sajjadesmaili
+
 Every contribution helps improve this project and supports future open-source work.
 
 هر حمایت، به بهبود این پروژه و کارهای متن‌باز بعدی کمک می‌کند.
