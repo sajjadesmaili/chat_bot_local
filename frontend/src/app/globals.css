@@ -1,0 +1,148 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  * {
+    @apply border-neutral-200 dark:border-neutral-800;
+  }
+
+  html,
+  body {
+    @apply bg-white text-neutral-900 dark:bg-neutral-950 dark:text-neutral-100;
+  }
+
+  body {
+    font-feature-settings: "cv11", "ss01";
+    text-rendering: optimizeLegibility;
+  }
+
+  html.font-en body {
+    font-family: var(--font-inter), system-ui, sans-serif;
+  }
+  html.font-fa body {
+    font-family: var(--font-vazirmatn), Tahoma, system-ui, sans-serif;
+  }
+
+  [dir="rtl"] .markdown-body blockquote {
+    border-left: none;
+    border-right: 3px solid rgb(212 212 216);
+    padding-left: 0;
+    padding-right: 0.75rem;
+  }
+  [dir="rtl"] .dark .markdown-body blockquote {
+    border-right-color: rgb(64 64 72);
+  }
+  [dir="rtl"] .markdown-body ul,
+  [dir="rtl"] .markdown-body ol {
+    margin: 0.5rem 1.25rem 0.75rem 0;
+  }
+  [dir="rtl"] .markdown-body th,
+  [dir="rtl"] .markdown-body td {
+    text-align: right;
+  }
+}
+
+@layer utilities {
+  .scrollbar-thin {
+    scrollbar-width: thin;
+    scrollbar-color: rgb(212 212 212) transparent;
+  }
+  .dark .scrollbar-thin {
+    scrollbar-color: rgb(64 64 64) transparent;
+  }
+  .scrollbar-thin::-webkit-scrollbar {
+    width: 6px;
+    height: 6px;
+  }
+  .scrollbar-thin::-webkit-scrollbar-thumb {
+    background-color: rgb(212 212 212);
+    border-radius: 999px;
+  }
+  .dark .scrollbar-thin::-webkit-scrollbar-thumb {
+    background-color: rgb(64 64 64);
+  }
+  .scrollbar-thin::-webkit-scrollbar-track {
+    background: transparent;
+  }
+}
+
+.skeleton {
+  background: linear-gradient(
+    90deg,
+    rgba(140, 140, 150, 0.12) 25%,
+    rgba(140, 140, 150, 0.22) 37%,
+    rgba(140, 140, 150, 0.12) 63%
+  );
+  background-size: 400% 100%;
+  animation: shimmer 2s ease-in-out infinite;
+}
+
+.markdown-body p {
+  margin-bottom: 0.75rem;
+}
+.markdown-body p:last-child {
+  margin-bottom: 0;
+}
+.markdown-body ul,
+.markdown-body ol {
+  margin: 0.5rem 0 0.75rem 1.25rem;
+}
+.markdown-body ul {
+  list-style-type: disc;
+}
+.markdown-body ol {
+  list-style-type: decimal;
+}
+.markdown-body li {
+  margin-bottom: 0.25rem;
+}
+.markdown-body h1,
+.markdown-body h2,
+.markdown-body h3 {
+  font-weight: 600;
+  margin: 1rem 0 0.5rem;
+}
+.markdown-body h1:first-child,
+.markdown-body h2:first-child,
+.markdown-body h3:first-child {
+  margin-top: 0;
+}
+.markdown-body a {
+  color: rgb(59 130 246);
+  text-decoration: underline;
+  text-decoration-color: rgba(59, 130, 246, 0.35);
+}
+.markdown-body blockquote {
+  border-left: 3px solid rgb(212 212 216);
+  padding-left: 0.75rem;
+  color: rgb(115 115 122);
+  margin: 0.5rem 0;
+}
+.dark .markdown-body blockquote {
+  border-left-color: rgb(64 64 72);
+  color: rgb(163 163 170);
+}
+.markdown-body table {
+  width: 100%;
+  border-collapse: collapse;
+  margin: 0.5rem 0;
+  font-size: 0.875rem;
+}
+.markdown-body th,
+.markdown-body td {
+  border: 1px solid rgb(228 228 231);
+  padding: 0.375rem 0.625rem;
+  text-align: left;
+}
+.dark .markdown-body th,
+.dark .markdown-body td {
+  border-color: rgb(39 39 42);
+}
+.markdown-body code:not(pre code) {
+  background: rgba(140, 140, 150, 0.14);
+  padding: 0.125rem 0.375rem;
+  border-radius: 6px;
+  font-size: 0.85em;
+  font-family: var(--font-mono, ui-monospace, monospace);
+}
