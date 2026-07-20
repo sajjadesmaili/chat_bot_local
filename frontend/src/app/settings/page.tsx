@@ -16,7 +16,7 @@ import { cn } from "@/lib/utils";
 
 const DEFAULT_FORM: Settings = {
   active_provider: "ollama",
-  active_model: "codellama:7b",
+  active_model: "qwen3:8b",
   embedding_model: "nomic-embed-text",
   temperature: 0.7,
   rag_enabled: true,

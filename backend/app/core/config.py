@@ -32,7 +32,7 @@ class Settings(BaseSettings):
     ]
 
     DEFAULT_AI_PROVIDER: str = "ollama"
-    DEFAULT_CHAT_MODEL: str = "codellama:7b"
+    DEFAULT_CHAT_MODEL: str = "qwen3:8b"
     DEFAULT_EMBEDDING_MODEL: str = "nomic-embed-text"
 
     CORS_ORIGINS: str = "http://localhost:3000"
