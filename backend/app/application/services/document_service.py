@@ -89,16 +89,111 @@ class DocumentService:
     async def delete_document(self, project_id: int, document_id: int) -> None:
         document = await self.repo.get_by_id(document_id)
         if document is None or document.project_id != project_id:
+            # #region agent log
+            import json
+            import time
+            from pathlib import Path as _P
+
+            _log = _P(__file__).resolve().parents[4] / "debug-3d5e50.log"
+            try:
+                with _log.open("a", encoding="utf-8") as f:
+                    f.write(
+                        json.dumps(
+                            {
+                                "sessionId": "3d5e50",
+                                "runId": "pre-fix",
+                                "hypothesisId": "B",
+                                "location": "document_service.py:delete_document:not_found",
+                                "message": "Document delete failed: not found or project mismatch",
+                                "data": {
+                                    "project_id": project_id,
+                                    "document_id": document_id,
+                                    "found": document is not None,
+                                    "doc_project_id": getattr(document, "project_id", None),
+                                },
+                                "timestamp": int(time.time() * 1000),
+                            },
+                            ensure_ascii=False,
+                        )
+                        + "\n"
+                    )
+            except OSError:
+                pass
+            # #endregion
             raise NotFoundException(f"Document {document_id} not found in project {project_id}")
+
+        # #region agent log
+        import json
+        import time
+        from pathlib import Path as _P
+
+        _log = _P(__file__).resolve().parents[4] / "debug-3d5e50.log"
+        file_path = Path(document.file_path)
+        try:
+            with _log.open("a", encoding="utf-8") as f:
+                f.write(
+                    json.dumps(
+                        {
+                            "sessionId": "3d5e50",
+                            "runId": "pre-fix",
+                            "hypothesisId": "C",
+                            "location": "document_service.py:delete_document:before_unlink",
+                            "message": "Document delete reached file unlink",
+                            "data": {
+                                "project_id": project_id,
+                                "document_id": document_id,
+                                "file_path": str(file_path),
+                                "file_exists_before": file_path.exists(),
+                            },
+                            "timestamp": int(time.time() * 1000),
+                        },
+                        ensure_ascii=False,
+                    )
+                    + "\n"
+                )
+        except OSError:
+            pass
+        # #endregion
 
         await self.rag_service.delete_document_vectors(project_id, document_id)
         await self.repo.soft_delete(document_id)
         await self.repo.session.commit()
 
+        unlink_ok = False
+        unlink_error = None
         try:
             Path(document.file_path).unlink(missing_ok=True)
+            unlink_ok = True
+        except OSError as exc:
+            unlink_error = str(exc)
+
+        # #region agent log
+        try:
+            with _log.open("a", encoding="utf-8") as f:
+                f.write(
+                    json.dumps(
+                        {
+                            "sessionId": "3d5e50",
+                            "runId": "pre-fix",
+                            "hypothesisId": "C",
+                            "location": "document_service.py:delete_document:after_unlink",
+                            "message": "Document file unlink result",
+                            "data": {
+                                "project_id": project_id,
+                                "document_id": document_id,
+                                "unlink_ok": unlink_ok,
+                                "unlink_error": unlink_error,
+                                "file_exists_after": file_path.exists(),
+                            },
+                            "timestamp": int(time.time() * 1000),
+                        },
+                        ensure_ascii=False,
+                    )
+                    + "\n"
+                )
         except OSError:
             pass
+        # #endregion
 
         await self.log_service.log(
             level=LogLevel.INFO,

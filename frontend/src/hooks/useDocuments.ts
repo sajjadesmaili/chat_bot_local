@@ -31,7 +31,32 @@ export function useUploadDocument(projectId: string) {
 export function useDeleteDocument(projectId: string) {
   const queryClient = useQueryClient();
   return useMutation({
-    mutationFn: (documentId: string) => documentsApi.remove(documentId),
+    mutationFn: (documentId: string) => {
+      // #region agent log
+      fetch("http://127.0.0.1:7331/ingest/aa4562a6-4206-4cc3-817a-00e119ebfed1", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+          "X-Debug-Session-Id": "3d5e50",
+        },
+        body: JSON.stringify({
+          sessionId: "3d5e50",
+          runId: "pre-fix",
+          hypothesisId: "B",
+          location: "useDocuments.ts:useDeleteDocument",
+          message: "Hook calling documentsApi.remove",
+          data: {
+            documentId,
+            projectId,
+            passesProjectIdToApi: false,
+          },
+          timestamp: Date.now(),
+        }),
+      }).catch(() => {});
+      // #endregion
+      // Intentionally not passing projectId yet (pre-fix probe for hypothesis B)
+      return documentsApi.remove(documentId);
+    },
     onSuccess: () => {
       queryClient.invalidateQueries({
         queryKey: queryKeys.documents(projectId),

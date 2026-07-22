@@ -284,8 +284,29 @@ export const documentsApi = {
       })) as Record<string, unknown>
     );
   },
-  remove: (documentId: string) =>
-    request<void>(`/documents/${documentId}`, { method: "DELETE" }),
+  remove: (documentId: string, projectId?: string) => {
+    // #region agent log
+    const qs = projectId ? `?project_id=${encodeURIComponent(projectId)}` : "";
+    const path = `/documents/${documentId}${qs}`;
+    fetch("http://127.0.0.1:7331/ingest/aa4562a6-4206-4cc3-817a-00e119ebfed1", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+        "X-Debug-Session-Id": "3d5e50",
+      },
+      body: JSON.stringify({
+        sessionId: "3d5e50",
+        runId: "pre-fix",
+        hypothesisId: "B",
+        location: "api.ts:documentsApi.remove",
+        message: "Frontend document delete request",
+        data: { documentId, projectId: projectId ?? null, path, hasProjectId: Boolean(projectId) },
+        timestamp: Date.now(),
+      }),
+    }).catch(() => {});
+    // #endregion
+    return request<void>(path, { method: "DELETE" });
+  },
 };
 
 // Settings ------------------------------------------------------------------
