@@ -171,6 +171,7 @@ Confirm backend is on `:8000` and `NEXT_PUBLIC_API_URL` matches.
 
 ## website post:
 [https://missingdata.ir/2580](https://missingdata.ir/2580)
+[ttps://missingdata.ir/2585](https://missingdata.ir/2585)
 
 ## License
 
